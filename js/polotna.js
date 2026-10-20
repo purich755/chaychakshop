@@ -1,27 +1,9 @@
-/* polotna.js — полотна: прелоадер, вход в дом (hero), угощение (горизонтальная сцена), полотна-переходы,
+/* polotna.js — их полотна: мягкий вход на первом экране, угощение, полотна-переходы,
    футер «полотна закрываются» и «живая ткань» — покачивание от курсора и скорости прокрутки. */
 (function () {
   'use strict';
   var DD = window.DD;
   var $ = DD.$, $$ = DD.$$;
-
-  /* ---------- 00 · прелоадер ---------- */
-  function preloader() {
-    var pre = $('.pre');
-    if (!pre) return;
-    var skip = document.documentElement.classList.contains('no-pre') || DD.reduced || !DD.gsap;
-    try { sessionStorage.setItem('dd-visited', '1'); } catch (e) {}
-    if (skip) { pre.remove(); return; }
-    var c = $$('.pre__c', pre), mark = $('.pre__mark', pre);
-    gsap.timeline({ onComplete: function () { pre.remove(); } })
-      .fromTo(c, { yPercent: -102, y: 0 }, { yPercent: 0, y: 0, duration: 0.6, stagger: 0.1, ease: 'power3.inOut' }, 0)
-      .fromTo(mark, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: 'power2.out' }, 0.38)
-      .to(c[0], { xPercent: -260, duration: 0.5, ease: 'power3.inOut' }, 1.0)
-      .to(c[2], { xPercent: 260, duration: 0.5, ease: 'power3.inOut' }, 1.0)
-      .to(c[1], { yPercent: -104, duration: 0.5, ease: 'power3.inOut' }, 1.0)
-      .to(mark, { autoAlpha: 0, duration: 0.25 }, 1.0)
-      .to(pre, { autoAlpha: 0, duration: 0.25 }, 1.22);
-  }
 
   /* ---------- живая ткань: пружина от скорости и курсора ---------- */
   function sway() {
@@ -50,105 +32,24 @@
     if (DD.gsap) gsap.ticker.add(tick);
   }
 
-  /* ---------- 01 · вход в дом ---------- */
+  /* ---------- первый экран: без закрепления и «слайдов» — только мягкий вход полотен ---------- */
   function hero() {
-    var sec = $('[data-hero]');
+    var sec = $('.hero');
     if (!sec || !DD.gsap || DD.reduced) return;
-    var stage = $('.hero__stage', sec), wrap = $('[data-hero-photo]', sec), img = $('[data-hero-img]', sec);
-    var hall = $('[data-hero-hall]', sec), hallImg = $('img', hall), plate = $('[data-hero-plate]', sec);
-    var welcome = $('[data-hero-welcome]', sec), hint = $('.hero__hint', sec);
-    var cloths = $$('.hero__cloths .cl', sec);
-    var mq = window.matchMedia('(min-width: 768px)');
-    var L = {};
-
-    // где дверь на кадре (доли кадра): широкий 1d36fd и вертикальный 1c34c6
-    var FR = {
-      wide: { w: 1920, h: 1440, pos: [0.25, 0.72], door: { cx: 0.372, cy: 0.76, l: 0.292, r: 0.455, t: 0.53, b: 1.0 } },
-      tall: { w: 1080, h: 1440, pos: [0.42, 0.62], door: { cx: 0.41, cy: 0.6, l: 0.32, r: 0.507, t: 0.478, b: 0.73 } },
-    };
-    function layout() {
-      var W = stage.clientWidth, H = stage.clientHeight, desk = mq.matches;
-      var f = desk ? FR.wide : FR.tall;
-      var boxL = desk ? Math.round(W * 0.36) : 0, boxW = W - boxL;
-      var s = Math.max(boxW / f.w, H / f.h);
-      var iw = f.w * s, ih = f.h * s;
-      var il = boxL - (iw - boxW) * f.pos[0], it = (H - ih) * f.pos[1];
-      var dx = il + f.door.cx * iw, dy = it + f.door.cy * ih;
-      var tx = W * 0.5, ty = H * 0.55;
-      var S = Math.max(desk ? 1.6 : 1.45, tx / (dx - il), (W - tx) / (il + iw - dx), ty / (dy - it), (H - ty) / (it + ih - dy)) * 1.02;
-      L = { W: W, H: H, desk: desk, boxL: boxL, S: S, mx: tx - dx, my: ty - dy,
-        door: { l: tx + (il + f.door.l * iw - dx) * S, r: tx + (il + f.door.r * iw - dx) * S, t: ty + (it + f.door.t * ih - dy) * S, b: ty + (it + f.door.b * ih - dy) * S } };
-      img.style.cssText = 'inset:auto;object-fit:fill;left:' + il.toFixed(1) + 'px;top:' + it.toFixed(1) + 'px;width:' + iw.toFixed(1) + 'px;height:' + ih.toFixed(1) + 'px;transform-origin:' + (dx - il).toFixed(1) + 'px ' + (dy - it).toFixed(1) + 'px';
-    }
-    layout();
-
-    // крупный кадр зала подменяем после загрузки страницы
-    window.addEventListener('load', function () { setTimeout(function () { if (hallImg.dataset.src) hallImg.src = hallImg.dataset.src; }, 600); });
-
-    var clip = { p: 0 };
-    function setClip() {
-      var d = L.door, k = clip.p, i = 1 - k;
-      var t = Math.max(0, d.t) * i, r = Math.max(0, L.W - d.r) * i, b = Math.max(0, L.H - d.b) * i, l = Math.max(0, d.l) * i;
-      hall.style.clipPath = 'inset(' + t.toFixed(1) + 'px ' + r.toFixed(1) + 'px ' + b.toFixed(1) + 'px ' + l.toFixed(1) + 'px)';
-    }
-
-    var tl = gsap.timeline({
-      defaults: { ease: 'none' },
-      scrollTrigger: {
-        trigger: sec, start: 'top top', end: function () { return '+=' + Math.round(window.innerHeight * (mq.matches ? 1.2 : 0.45)); },
-        pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1,
-        onRefreshInit: function () { gsap.set(img, { clearProps: 'transform' }); layout(); },
-      },
-    });
-    tl.to(hint, { autoAlpha: 0, duration: 0.06 }, 0)
-      .to(plate, { xPercent: function () { return mq.matches ? -115 : 0; }, yPercent: function () { return mq.matches ? 0 : 110; }, autoAlpha: 0, duration: 0.36, ease: 'power2.in' }, 0)
-      .fromTo(wrap, { '--clip': function () { return (L.boxL / L.W * 100).toFixed(2) + '%'; } }, { '--clip': '0%', duration: 0.42, ease: 'power2.inOut' }, 0.04)
-      .fromTo(wrap, { '--fade': 1 }, { '--fade': 0, duration: 0.3 }, 0.12);
-    cloths.forEach(function (c, i) {
-      var dir = parseFloat(c.getAttribute('data-hc')) || (i < 2 ? -1 : 1);
-      tl.to(c, { x: function () { return dir * window.innerWidth * (0.42 + Math.abs(dir) * 0.28); }, opacity: 0.25, duration: 0.5, ease: 'power2.in' }, 0.02 + i * 0.02);
-    });
-    tl.to(img, { x: function () { return L.mx; }, y: function () { return L.my; }, scale: function () { return L.S; }, duration: 0.58, ease: 'power2.inOut' }, 0.02)
-      .set(hall, { visibility: 'visible' }, 0.5)
-      .fromTo(clip, { p: 0 }, { p: 1, duration: 0.3, ease: 'power2.inOut', onUpdate: setClip, onStart: setClip }, 0.52)
-      .fromTo(hallImg, { scale: 1.25 }, { scale: 1, duration: 0.4, ease: 'power2.out' }, 0.52)
-      .fromTo(welcome, { yPercent: -100, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 0.2, ease: 'power3.out' }, 0.78)
-      .to({}, { duration: 0.06 });
-    setClip();
-
-    // перекладка при смене ориентации / ширины
-    mq.addEventListener('change', function () { ScrollTrigger.refresh(); });
+    gsap.from($$('.hero__cloths .cl', sec), { yPercent: -18, opacity: 0, duration: 1.4, stagger: 0.12, ease: 'power3.out', delay: 0.15 });
+    gsap.from($('.hero__photo img', sec), { scale: 1.06, duration: 1.8, ease: 'power2.out' });
   }
 
-  /* ---------- 03 · угощение: горизонтальная сцена ---------- */
+  /* ---------- угощение: обычный раздел, сцены появляются по очереди ---------- */
   function treat() {
     var sec = $('[data-treat]');
     if (!sec) return;
     steam();
     if (!DD.gsap || DD.reduced) return;
-    var track = $('[data-treat-track]', sec);
-    var mm = gsap.matchMedia();
-    mm.add('(min-width: 1024px)', function () {
-      var dist = function () { return Math.max(0, track.scrollWidth - window.innerWidth); };
-      var tween = gsap.to(track, { x: function () { return -dist(); }, ease: 'none',
-        scrollTrigger: { trigger: sec, start: 'top top', end: function () { return '+=' + dist(); }, pin: true, scrub: 1, invalidateOnRefresh: true, anticipatePin: 1 } });
-      // полотна между сценами наплывают быстрее ленты
-      $$('.treat__gap', sec).forEach(function (g) {
-        gsap.fromTo(g, { xPercent: 120 }, { xPercent: -160, ease: 'none', scrollTrigger: { trigger: g, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
-      });
-      $$('.scene__photo .clothframe__img img', sec).forEach(function (im) {
-        gsap.fromTo(im, { scale: 1.14, xPercent: 4 }, { scale: 1.02, xPercent: -4, ease: 'none', scrollTrigger: { trigger: im, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
-      });
-      $$('.scene__text', sec).forEach(function (t) {
-        gsap.from(t.children, { y: 40, opacity: 0, stagger: 0.08, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: t, containerAnimation: tween, start: 'left 78%', once: true } });
-      });
-      return function () { gsap.set(track, { clearProps: 'transform' }); };
+    $$('.scene', sec).forEach(function (sc, i) {
+      gsap.from(sc.children, { y: 50, opacity: 0, stagger: 0.12, duration: 0.9, ease: 'power3.out', delay: (i % 3) * 0.08, scrollTrigger: { trigger: sc, start: 'clamp(top 88%)', once: true } });
     });
-    mm.add('(max-width: 1023px)', function () {
-      $$('.scene', sec).forEach(function (s) {
-        gsap.from(s.children, { y: 50, opacity: 0, stagger: 0.12, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: s, start: 'top 85%', once: true } });
-      });
-    });
+    gsap.from($$('.treat__final > *', sec), { y: 40, opacity: 0, stagger: 0.12, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: $('.treat__final', sec), start: 'clamp(top 88%)', once: true } });
   }
 
   /* пар над чашкой: не больше 40 частиц, пауза вне экрана */
@@ -226,7 +127,6 @@
     gsap.from('.foot__wish > :not(.draw)', { y: 40, opacity: 0, stagger: 0.1, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: '.foot__wish', start: 'top 45%', once: true } });
   }
 
-  DD.on(5, 'preloader', preloader);
   DD.on(10, 'hero', hero);
   DD.on(20, 'treat', treat);
   DD.on(60, 'veils', veils);

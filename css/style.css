@@ -608,11 +608,6 @@ html:not(.no-pre) .hero__plate > * { animation-delay: 1.25s; }
 .builder__head .h3 { font-size: clamp(30px, 3vw, 46px); }
 .builder__head p { max-width: 30em; color: rgba(246, 243, 238, .78); }
 .builder__stage { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
-.builder__chest { position: relative; width: min(100%, 560px); justify-self: center; aspect-ratio: 520 / 380; }
-.sandyk { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 30px 30px rgba(0, 0, 0, .35)); }
-.sandyk__lid { transform-origin: 260px 120px; transform-box: view-box; }
-.builder__inside { position: absolute; left: 13%; right: 13%; top: 4%; height: calc(44.5% - 4%); overflow: hidden; display: flex; flex-wrap: wrap-reverse; align-content: flex-start; justify-content: center; gap: 0 2px; padding: 0 4px; }
-.builder__inside img { width: clamp(44px, 6vw, 74px); height: clamp(54px, 7.4vw, 92px); object-fit: cover; margin-top: -18px; border-radius: 4px 4px 0 0; box-shadow: 0 -2px 8px rgba(0, 0, 0, .3); transform: translateY(26%) rotate(var(--r, 0deg)); }
 .builder__list { display: grid; gap: 16px; align-content: start; }
 .builder__count { font: 500 13px/1.4 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: #DCE6C8; }
 .builder__items { display: grid; gap: 0; max-height: 280px; overflow-y: auto; counter-reset: it; }
@@ -847,6 +842,133 @@ html:not(.js) .draw { stroke-dashoffset: 0; opacity: 1; }
   .flourish { width: 168px; height: 25px; margin-top: 16px; }
 }
 
+/* ---------- правки по отзыву владельца (20.10.2026) ----------
+   — полотна «один в один»: ткань берётся из их макетов (img/polotna/polotno-*, drape-*), своего орнамента нет;
+   — фоны однотонные, в их палитре, без «цветочков»; стыки разделов — простой фестон;
+   — первый экран без закрепления и «слайдов», без фасада; «Угощение» — обычный раздел. */
+
+/* их полотна как текстура висящей ткани */
+.cl--lime { --tex: url(../img/polotna/polotno-1.webp); }
+.cl--sky { --tex: url(../img/polotna/polotno-2.webp); }
+.cl--rose { --tex: url(../img/polotna/polotno-3.webp); }
+.cl--lilac { --tex: url(../img/polotna/drape-1.webp); }
+.cl--drape { --tex: url(../img/polotna/drape-2.webp); --c: #E9ECEB; }
+.cl--mint { --tex: url(../img/polotna/drape-3.webp); }
+.cloth { background: var(--tex) 50% var(--py, 0%) / cover no-repeat, var(--c); }
+.cl { --o: .78; }
+.tab--paper .cloth { background: url(../img/polotna/drape-2.webp) 50% 30% / cover no-repeat; }
+.tab .cl { --o: .62; }
+.tab[aria-selected="true"] .cl { --o: .95; opacity: .95; }
+
+/* выглядывающее из-за фото полотно — тоже их ткань */
+.clothframe--rose { --tex: url(../img/polotna/polotno-3.webp); }
+.clothframe--lime { --tex: url(../img/polotna/polotno-1.webp); }
+.clothframe--sky { --tex: url(../img/polotna/polotno-2.webp); }
+.clothframe--mint { --tex: url(../img/polotna/drape-3.webp); }
+.clothframe--lilac { --tex: url(../img/polotna/drape-1.webp); }
+.clothframe::before { background: var(--tex, var(--c)) 50% 20% / cover no-repeat; opacity: .9; mix-blend-mode: normal; }
+.card { --tex: url(../img/polotna/polotno-3.webp); }
+.card[data-cat="tea"], .card[data-cat="souvenirs"] { --tex: url(../img/polotna/polotno-2.webp); }
+.card[data-cat="honey"] { --tex: url(../img/polotna/polotno-1.webp); }
+.card[data-cat="drinks"] { --tex: url(../img/polotna/drape-3.webp); }
+.card[data-cat="chests"] { --tex: url(../img/polotna/drape-1.webp); }
+.card__ph::before, .gift__item .card__ph::before { background: var(--tex, var(--c)) 50% 30% / cover no-repeat; mix-blend-mode: normal; opacity: .85; }
+.gift__item { --tex: url(../img/polotna/polotno-2.webp); }
+
+/* без нарисованного орнамента: метки, язычки, подсказки зала — чистый цвет */
+.label::before { content: none; }
+.hall__legend button::before { background: var(--c, var(--lime)); }
+.tongue span::before { background: var(--c); }
+
+/* фоны: только палитра, без узора */
+body { background: var(--cream); }
+.hero__stage { background: var(--cream); }
+.ground--cream { background: var(--cream); }
+.ground--sage { background: var(--sage); }
+.ground--honey { background: var(--honey); }
+.ground--berry { background: var(--berry); }
+.ground--cobalt { background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .06) 0 46px, rgba(255, 255, 255, 0) 46px 110px, rgba(0, 0, 0, .06) 110px 150px, rgba(0, 0, 0, 0) 150px 230px), var(--cobalt); }
+.foot__base { background: var(--brand-deep); }
+/* стык разделов — простой фестон, как край ткани */
+.edge {
+  height: 16px; background-position: 0 16px;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='16'%3E%3Cpath d='M0 16a20 15 0 0 1 40 0z'/%3E%3C/svg%3E") 0 100% / 40px 16px repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='16'%3E%3Cpath d='M0 16a20 15 0 0 1 40 0z'/%3E%3C/svg%3E") 0 100% / 40px 16px repeat-x;
+}
+
+/* полоса из цветов их полотен — вместо вышитой каймы */
+.band, .hero__plate::after, .treat .plate::after, .strip::before {
+  background: linear-gradient(90deg, var(--lime) 0 20%, var(--mint) 20% 40%, var(--sky) 40% 60%, var(--rose) 60% 80%, var(--lilac) 80% 100%) 0 0 / 200px 100% repeat-x;
+}
+.band { display: block; height: 8px; border-radius: 4px; opacity: .9; }
+.hero__plate::after { height: 8px; bottom: 34px; left: 32px; right: 32px; border-radius: 4px; }
+.treat .plate::after { height: 8px; bottom: 32px; left: 30px; right: 30px; border-radius: 4px; }
+.strip::before { height: 6px; top: 22px; left: 30px; right: 54px; border-radius: 3px; }
+.hdr::after { height: 6px; background: linear-gradient(90deg, var(--lime) 0 20%, var(--mint) 20% 40%, var(--sky) 40% 60%, var(--rose) 60% 80%, var(--lilac) 80% 100%) 0 0 / 200px 100% repeat-x; box-shadow: none; }
+.foot__base .foot__band { height: 8px; margin: 0 var(--gut); padding: 0; border-radius: 4px; }
+.drawer__band { margin: -6px 0 6px; height: 6px; }
+.hero__welcome-band { display: none; }
+
+/* ---------- первый экран ---------- */
+.hero__photo { inset: 0 0 0 36%; clip-path: none; }
+.hero__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; transform: none; }
+.hero__photo::before { left: 0; z-index: auto; }
+.hero__cloths { mix-blend-mode: normal; }
+.hero__cloths .cl { --o: .92; mix-blend-mode: normal; height: 88%; }
+.hero__hello { font: italic 400 clamp(19px, 1.6vw, 24px)/1.2 var(--f-display); color: var(--berry-ink); margin: -6px 0 16px; }
+.hero__plate { padding-bottom: 84px; }
+@media (max-width: 767px) {
+  .hero__photo { inset: 0 0 38% 0; }
+  .hero__cloths .cl { height: 58%; }
+  .hero__plate { padding-bottom: 58px; }
+  .hero__plate::after { bottom: 22px; left: 22px; right: 22px; }
+  .hero__hello { margin: 0 0 10px; }
+}
+
+/* ---------- угощение: обычный раздел ---------- */
+.treat__pin { height: auto; display: block; overflow: visible; }
+.treat__track { transform: none !important; will-change: auto; }
+.treat__gap { display: none; }
+@media (min-width: 1024px) {
+  .treat__track { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 72px clamp(28px, 3.4vw, 56px);
+    padding: var(--sec) max(var(--gut), calc((100vw - 1360px) / 2)); }
+  .treat__intro { grid-column: 1 / -1; max-width: 640px; }
+  .scene { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .scene__photo { width: 100%; }
+  .scene__text { width: auto; margin: -56px 18px 0; padding: 28px 28px 50px; }
+  .scene:nth-of-type(2) { margin-top: 64px; }
+  .treat__final { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start; margin-top: 24px; }
+  .treat__final .quotes { margin-top: 0; flex-wrap: wrap; }
+}
+
+/* ---------- «Только Татарстан» внутри зала ---------- */
+.pledge { margin-top: 150px; display: grid; gap: 26px; }
+.pledge__phrase { font: 300 clamp(30px, 3.8vw, 58px)/1.14 var(--f-display); letter-spacing: -.012em; max-width: 21em; }
+.pledge__phrase em { font-style: italic; color: var(--berry-ink); }
+.pledge .tags { margin-top: 30px; }
+
+/* ---------- как дойти: вывеска и карта ---------- */
+.visit__left { display: grid; gap: 40px; align-content: start; }
+.visit__sign .clothframe__img { aspect-ratio: 1040 / 356; }
+.visit__sign .clothframe__img img { position: static; }
+.visit__left .map { margin-top: 0; aspect-ratio: 5 / 4; }
+.visit__left .map__img { object-position: 50% 50%; }
+@media (max-width: 1023px) { .visit__left { width: 100%; } }
+@media (max-width: 767px) { .visit__left .map { aspect-ratio: 4 / 5; } }
+
+/* ---------- сундук: настоящее фото ---------- */
+
+/* ---------- кнопки WhatsApp + Max ---------- */
+.send { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn--max { background: linear-gradient(135deg, #1F5FD6, #6A2BD8); color: #fff; box-shadow: 0 10px 22px -14px rgba(60, 40, 160, .9); }
+.btn--max:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.drawer__ask { justify-self: start; }
+.gift__actions .send { flex: none; }
+.toast { position: fixed; z-index: 120; left: 0; right: 0; bottom: 24px; width: max-content; max-width: min(560px, calc(100vw - 32px)); margin-inline: auto;
+  padding: 16px 20px; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.45; box-shadow: 0 20px 40px -16px rgba(0, 0, 0, .45);
+  border-left: 4px solid #4C47D9; opacity: 0; transform: translateY(16px); transition: opacity .35s, transform .35s var(--ease); }
+.toast.is-on { opacity: 1; transform: none; }
+
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -857,3 +979,35 @@ html:not(.js) .draw { stroke-dashoffset: 0; opacity: 1; }
   .hero__plate > * { animation: none; }
   .draw { stroke-dashoffset: 0; opacity: 1; }
 }
+
+/* поправки после просмотра */
+.visit__sign .clothframe__img { -webkit-mask: none; mask: none; border-radius: 3px; }
+.tab__name, .tab__count { background: rgba(251, 245, 234, .88); padding: 2px 7px; border-radius: 2px; }
+.tab__count { margin-top: 3px; }
+@media (max-width: 767px) { .hdr { background: var(--paper); } }
+
+/* ---------- сундук открывается: настоящие кадры из роликов магазина ---------- */
+.builder__chest { position: relative; display: grid; justify-items: center; gap: 14px; width: 100%; aspect-ratio: auto; }
+.opener { position: relative; width: min(100%, 440px, calc(68vh * 480 / 706)); aspect-ratio: 480 / 706; overflow: hidden; cursor: pointer; background: #1b2716;
+  box-shadow: 0 34px 60px -30px rgba(0, 0, 0, .7);
+  -webkit-mask: var(--fringe) 0 100% / 32px 18px repeat-x, linear-gradient(#000, #000) 0 0 / 100% calc(100% - 17px) no-repeat;
+  mask: var(--fringe) 0 100% / 32px 18px repeat-x, linear-gradient(#000, #000) 0 0 / 100% calc(100% - 17px) no-repeat; }
+.opener__poster, .opener__canvas { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+.opener__canvas { opacity: 0; }
+.opener.is-canvas .opener__canvas { opacity: 1; }
+.opener.is-photo { cursor: default; }
+.opener.is-photo .opener__canvas { display: none; }
+.opener__inside { position: absolute; overflow: hidden; pointer-events: none; opacity: 0; transition: opacity .35s; }
+.opener.is-filled .opener__inside { opacity: 1; }
+.opener.is-photo .opener__inside { opacity: 1; left: 8%; width: 84%; top: 62%; height: 30%; }
+.opener__inside img { position: absolute; width: 22%; aspect-ratio: 3 / 4; height: auto; object-fit: cover; border: 2px solid #fff; border-radius: 3px;
+  box-shadow: 0 8px 14px -4px rgba(0, 0, 0, .45); transform: translateY(var(--sink, 0%)) rotate(var(--r, 0deg)); transform-origin: 50% 100%;
+  animation: drop-in .45s var(--ease) both; }
+@keyframes drop-in { from { opacity: 0; translate: 0 -40%; } to { opacity: 1; translate: 0 0; } }
+.opener__hint { position: absolute; left: 0; right: 0; bottom: 34px; width: max-content; margin-inline: auto; padding: 9px 14px; background: rgba(251, 245, 234, .94); color: var(--ink);
+  font: 500 12px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; pointer-events: none; box-shadow: 0 8px 18px -8px rgba(0, 0, 0, .5); animation: hint-bob 2.2s ease-in-out infinite; }
+@keyframes hint-bob { 50% { transform: translateY(-5px); } }
+.opener.is-open .opener__hint, .opener.is-photo .opener__hint { display: none; }
+.opener__btn[hidden] { display: none !important; }
+.opener__src { font-size: 13px; color: rgba(246, 243, 238, .62); text-align: center; }
+@media (max-width: 1023px) { .opener { width: min(100%, 380px); } }

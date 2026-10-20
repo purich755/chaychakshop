@@ -133,8 +133,7 @@
     ['img/hall/hall-shelf.webp', 'Стеллаж: игрушки, чай, мёд, урбеч и шоперы'],
     ['img/hall/hall-shelf-2.webp', 'Второй стеллаж с чаем и сувенирами'],
     ['img/hall/hall-evening.webp', 'Зал вечером — на окне гирлянда'],
-    ['img/facade/facade-wide.webp', 'Вход с улицы: дверь под кованым козырьком'],
-    ['img/facade/facade-winter.webp', 'Дом зимой'],
+    ['img/polotna/hero-polotno.webp', 'Голубое полотно с орнаментом — висит у стены в зале'],
   ];
   function lightbox() {
     var lb = $('[data-lightbox]');

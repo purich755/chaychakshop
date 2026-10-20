@@ -130,6 +130,7 @@
     b.textContent = pr.text; b.classList.toggle('is-ask', pr.ask);
     var name = p.name + (p.variants ? ' (' + pr.w + ')' : '');
     $('[data-d-wa]', drawer).href = DD.wa('Здравствуйте! Хочу узнать про: ' + name);
+    DD.maxLink($('[data-d-max]', drawer), 'Здравствуйте! Хочу узнать про: ' + name);
   }
   function open(id, from) {
     var p = DD.product(id);

@@ -274,6 +274,35 @@
     });
   }
 
+  /* ---------- Max: ссылка «поделиться» открывает приложение с готовым текстом ---------- */
+  // max.ru/:share?text= в мобильном Max открывает выбор чата; в браузере на компьютере такой страницы нет,
+  // поэтому текст ещё и копируем, а подсказка говорит, кому его отправить.
+  DD.maxUrl = function (text) { return 'https://max.ru/:share?text=' + encodeURIComponent(text || 'Здравствуйте!'); };
+  DD.maxLink = function (el, text) { if (el) { el.href = DD.maxUrl(text); el.setAttribute('data-max-msg', text || ''); } };
+  var toastT = 0;
+  DD.toast = function (msg) {
+    var t = DD.$('[data-toast]');
+    if (!t) return;
+    t.textContent = msg; t.hidden = false;
+    requestAnimationFrame(function () { t.classList.add('is-on'); });
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { t.classList.remove('is-on'); setTimeout(function () { t.hidden = true; }, 400); }, 6500);
+  };
+  function initMax() {
+    DD.$$('[data-max-text]').forEach(function (a) {
+      DD.maxLink(a, a.getAttribute('data-max-text'));
+      a.target = '_blank'; a.rel = 'noopener';
+    });
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[data-max-msg]');
+      if (!a) return;
+      if (a.getAttribute('aria-disabled') === 'true') { e.preventDefault(); return; }
+      var text = a.getAttribute('data-max-msg');
+      try { if (navigator.clipboard) navigator.clipboard.writeText(text); } catch (err) {}
+      DD.toast('Открываем Max. Выберите чат с магазином +7 (962) 552-71-98 — текст уже скопирован, его можно просто вставить.');
+    });
+  }
+
   /* ---------- запуск ---------- */
   function boot() {
     DD.status();
@@ -294,6 +323,7 @@
     initEmbroidery();
     initVideos();
     initMap();
+    initMax();
     if (DD.gsap) {
       window.addEventListener('load', function () { ScrollTrigger.refresh(); });
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
