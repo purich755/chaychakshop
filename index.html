@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Дом татарской продукции — ЧайЧак stories, Казань</title>
 <meta name="description" content="Магазин на Мартына Межлаука, 6 в Казани: только то, что сделано в Татарстане. Чак-чак на мёду, татарский чай, мёд, урбеч, сундуки ручной чеканки и сувениры. Сначала нальём чаю — потом выбирайте.">
-<meta name="theme-color" content="#F6F3EE">
+<meta name="theme-color" content="#2F4426">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ru_RU">
 <meta property="og:title" content="Дом татарской продукции — ЧайЧак stories, Казань">
@@ -19,7 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preload" as="image" href="img/polotna/hero-polotno.webp" imagesrcset="img/polotna/hero-polotno-760.webp 760w, img/polotna/hero-polotno.webp 1200w" imagesizes="(min-width: 768px) 64vw, 100vw" fetchpriority="high">
+<link rel="preload" as="image" href="img/facade/hero-facade.webp" imagesrcset="img/facade/hero-facade-1200.webp 1200w, img/facade/hero-facade.webp 1920w" imagesizes="60vw" media="(min-width: 1024px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/facade/hero-facade-m-720.webp" imagesrcset="img/facade/hero-facade-m-720.webp 720w, img/facade/hero-facade-m.webp 1080w" imagesizes="100vw" media="(max-width: 1023px)" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..600;1,7..72,300..500&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap&subset=cyrillic,cyrillic-ext">
 <link rel="stylesheet" href="css/style.css">
 <script>document.documentElement.classList.add('js')</script>
@@ -89,27 +90,30 @@
 
 <main id="main">
 
-<!-- Первый экран -->
-<section class="hero" id="top" aria-labelledby="hero-title">
-  <div class="hero__stage">
-    <div class="hero__photo">
-      <img src="img/polotna/hero-polotno.webp" srcset="img/polotna/hero-polotno-760.webp 760w, img/polotna/hero-polotno.webp 1200w" sizes="(min-width: 768px) 64vw, 100vw" width="1200" height="1178" alt="Голубое полотно из зала магазина: крупный татарский орнамент на прозрачной ткани" fetchpriority="high">
-    </div>
-    <div class="hero__cloths" aria-hidden="true">
-      <span class="cl cl--lime" style="--x:49%;--w:7%"><i class="cloth"></i></span>
-      <span class="cl cl--rose" style="--x:87%;--w:7%;--py:40%"><i class="cloth"></i></span>
-    </div>
-    <div class="hero__plate">
-      <p class="label">Казань · Мартына Межлаука, 6</p>
-      <p class="hero__hello"><span lang="tt">Рәхим итегез!</span> — добро пожаловать</p>
-      <h1 class="h1" id="hero-title">Дом <em>татарской</em> продукции</h1>
-      <p class="lead">Всё, что на полках, сделано в Татарстане. Заходите — сначала нальём чаю.</p>
-      <div class="hero__cta">
-        <a class="btn btn--brand" href="#katalog">Смотреть каталог</a>
-        <a class="btn btn--text" href="#kak-doyti">Как дойти <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+<!-- Первый экран: крыльцо магазина и их полотно -->
+<section class="hero hx" id="top" aria-labelledby="hero-title">
+  <div class="hx__photo">
+    <picture>
+      <source media="(max-width: 1023px)" srcset="img/facade/hero-facade-m-720.webp 720w, img/facade/hero-facade-m.webp 1080w" sizes="100vw" width="1080" height="1714">
+      <img src="img/facade/hero-facade.webp" srcset="img/facade/hero-facade-1200.webp 1200w, img/facade/hero-facade.webp 1920w" sizes="(min-width: 768px) 60vw, 100vw" width="1920" height="1440" alt="Вход в «Дом татарской продукции»: крыльцо под кованым козырьком, деревянная дверь, над входом зелёная вывеска" fetchpriority="high">
+    </picture>
+  </div>
+  <span class="hx__cloth" aria-hidden="true"></span>
+  <div class="hx__panel">
+    <div class="hx__in">
+      <p class="hx__label">Казань · ул. Мартына Межлаука, 6</p>
+      <p class="hx__hello"><span lang="tt">Рәхим итегез!</span></p>
+      <h1 class="hx__title" id="hero-title">Дом <em>татарской</em> продукции</h1>
+      <p class="hx__lead">Всё, что на полках, сделано в Татарстане. Заходите — сначала нальём чаю.</p>
+      <div class="hx__cta">
+        <a class="btn hx__btn" href="#katalog">Смотреть каталог</a>
+        <a class="hx__link" href="#kak-doyti">Как дойти <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg></a>
       </div>
-      <p class="status" data-status><i class="status__dot"></i><span class="status__text">Открыто до 19:00</span></p>
+      <ul class="hx__facts">
+        <li>Только Татарстан</li><li>Халяль</li><li>Можно попробовать</li><li>Доставка по России</li>
+      </ul>
     </div>
+    <p class="status hx__status" data-status><i class="status__dot"></i><span class="status__text">Открыто до 19:00</span></p>
   </div>
 </section>
 

@@ -984,7 +984,7 @@ body { background: var(--cream); }
 .visit__sign .clothframe__img { -webkit-mask: none; mask: none; border-radius: 3px; }
 .tab__name, .tab__count { background: rgba(251, 245, 234, .88); padding: 2px 7px; border-radius: 2px; }
 .tab__count { margin-top: 3px; }
-@media (max-width: 767px) { .hdr { background: var(--paper); } }
+
 
 /* ---------- сундук открывается: настоящие кадры из роликов магазина ---------- */
 .builder__chest { position: relative; display: grid; justify-items: center; gap: 14px; width: 100%; aspect-ratio: auto; }
@@ -1011,3 +1011,64 @@ body { background: var(--cream); }
 .opener__btn[hidden] { display: none !important; }
 .opener__src { font-size: 13px; color: rgba(246, 243, 238, .62); text-align: center; }
 @media (max-width: 1023px) { .opener { width: min(100%, 380px); } }
+
+/* ---------- первый экран (21.10.2026): крыльцо + зелёная панель цвета их печати + их полотно на стыке ---------- */
+.hx { position: relative; display: grid; grid-template-columns: minmax(0, 42fr) minmax(0, 58fr); min-height: 100vh; min-height: 100svh; background: var(--brand-deep); color: var(--paper); overflow: hidden; isolation: isolate; }
+.hx__photo { grid-column: 2; grid-row: 1; position: relative; overflow: hidden; }
+.hx__photo picture { display: block; position: absolute; inset: 0; }
+.hx__photo img { position: absolute; inset: -4% 0 0; width: 100%; height: 104%; max-width: none; object-fit: cover; object-position: 22% 62%; animation: hx-photo 2.2s cubic-bezier(.2, .7, .2, 1) both; }
+.hx__photo::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(20, 30, 16, .55) 0, rgba(20, 30, 16, 0) 22%, rgba(20, 30, 16, 0) 70%, rgba(20, 30, 16, .45) 100%), linear-gradient(90deg, rgba(47, 68, 38, .55), rgba(47, 68, 38, 0) 28%); }
+@keyframes hx-photo { from { transform: scale(1.08); filter: brightness(.7); } to { transform: none; filter: none; } }
+/* их полотно висит на стыке панели и фото */
+.hx__cloth { position: absolute; z-index: 2; top: 0; left: calc(42% - 44px); width: clamp(160px, 17.5vw, 300px); height: 90%;
+  background: linear-gradient(rgba(20, 30, 16, .6), rgba(20, 30, 16, 0) 150px), url(../img/polotna/polotno-2.webp) 50% 0 / cover no-repeat; box-shadow: 10px 0 30px -12px rgba(0, 0, 0, .55);
+  -webkit-mask: var(--fringe) 0 100% / 32px 18px repeat-x, linear-gradient(#000, #000) 0 0 / 100% calc(100% - 17px) no-repeat;
+  mask: var(--fringe) 0 100% / 32px 18px repeat-x, linear-gradient(#000, #000) 0 0 / 100% calc(100% - 17px) no-repeat;
+  transform-origin: 50% 0; animation: hx-cloth 1.6s cubic-bezier(.2, .7, .2, 1) .15s both; }
+@keyframes hx-cloth { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 -2% 0); } }
+.hx__panel { grid-column: 1; grid-row: 1; position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center;
+  padding: calc(var(--hdr) + 40px) clamp(80px, 9vw, 190px) 56px clamp(24px, 4.5vw, 120px);
+  background: radial-gradient(120% 70% at 0% 100%, rgba(74, 106, 56, .55), transparent 60%), radial-gradient(80% 60% at 100% 0%, rgba(242, 194, 48, .08), transparent 70%), var(--brand-deep); }
+.hx__in > * { animation: hx-rise 1s cubic-bezier(.2, .7, .2, 1) both; }
+.hx__in > :nth-child(2) { animation-delay: .08s; } .hx__in > :nth-child(3) { animation-delay: .16s; } .hx__in > :nth-child(4) { animation-delay: .26s; }
+.hx__in > :nth-child(5) { animation-delay: .34s; } .hx__in > :nth-child(6) { animation-delay: .42s; }
+@keyframes hx-rise { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.hx__label { font: 500 12px/1.4 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: rgba(251, 245, 234, .7); }
+.hx__hello { margin-top: 28px; font: italic 400 clamp(20px, 1.7vw, 26px)/1.2 var(--f-display); color: var(--saffron); }
+.hx__title { margin-top: 14px; font: 300 clamp(50px, 5.6vw, 104px)/.96 var(--f-display); letter-spacing: -.02em; color: var(--paper); }
+.hx__title em { display: block; font-style: italic; color: #E9C46A; }
+.hx__lead { margin-top: 30px; max-width: 24em; font-size: clamp(17px, 1.35vw, 20px); line-height: 1.55; color: rgba(251, 245, 234, .82); }
+.hx__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 30px; margin-top: 40px; }
+.hx__btn { background: var(--paper); color: var(--brand-deep); box-shadow: 0 14px 30px -14px rgba(0, 0, 0, .6); }
+.hx__btn:hover { background: #fff; transform: translateY(-2px); }
+.hx__link { display: inline-flex; align-items: center; gap: 10px; color: var(--paper); font-weight: 700; text-decoration: none; padding: 10px 0; border-bottom: 1.5px solid rgba(251, 245, 234, .45); transition: border-color .3s, gap .3s; }
+.hx__link:hover { border-color: var(--paper); gap: 14px; }
+.hx__facts { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 48px; padding-top: 22px; border-top: 1px solid rgba(251, 245, 234, .18); }
+.hx__facts li { display: flex; align-items: center; gap: 9px; font: 500 12px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: rgba(251, 245, 234, .75); }
+.hx__facts li::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--saffron); }
+.hx__status { position: absolute; left: clamp(24px, 4.5vw, 120px); bottom: 28px; color: rgba(251, 245, 234, .85); }
+:focus-visible:where(.hx *) { outline-color: var(--saffron); }
+/* шапка над первым экраном — светлая */
+.hdr:not(.is-solid) .hdr__brand, .hdr:not(.is-solid) .hdr__nav a, .hdr:not(.is-solid) .status--mini { color: var(--paper); }
+.hdr:not(.is-solid) .burger span:not(.sr) { background: var(--paper); }
+@media (max-width: 1023px) {
+  .hx { grid-template-columns: minmax(0, 1fr); grid-template-rows: 56vh auto; min-height: 0; }
+  .hx__photo { grid-column: 1; grid-row: 1; }
+  .hx__photo img { object-position: 40% 4%; }
+  .hx__photo::after { background: linear-gradient(180deg, rgba(20, 30, 16, .6) 0, rgba(20, 30, 16, 0) 30%, rgba(20, 30, 16, 0) 62%, rgba(47, 68, 38, 1) 100%); }
+  .hx__panel { grid-column: 1; grid-row: 2; padding: 8px var(--gut) 88px; }
+  .hx__cloth { left: auto; right: 0; width: 72px; height: 44vh; }
+  .hx__hello { margin-top: 18px; }
+  .hx__facts { margin-top: 34px; }
+  .hx__status { left: var(--gut); bottom: 30px; }
+}
+@media (max-width: 767px) {
+  .hx { grid-template-rows: 50vh auto; }
+  .hx__title { font-size: clamp(44px, 12.5vw, 60px); }
+  .hx__cta { margin-top: 28px; }
+}
+@media (prefers-reduced-motion: reduce) { .hx__photo img, .hx__cloth, .hx__in > * { animation: none; } }
+/* чужие вывески (барбершоп слева, круглый значок справа) — за край кадра */
+@media (min-width: 1500px) { .hx__photo img { inset: -14% 0 0; height: 122%; object-position: 18% 66%; } }
+@media (min-width: 768px) and (max-width: 1023px) { .hx__photo img { object-position: 50% 6%; } }

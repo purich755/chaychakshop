@@ -34,10 +34,11 @@
 
   /* ---------- первый экран: без закрепления и «слайдов» — только мягкий вход полотен ---------- */
   function hero() {
-    var sec = $('.hero');
+    var sec = $('.hx');
     if (!sec || !DD.gsap || DD.reduced) return;
-    gsap.from($$('.hero__cloths .cl', sec), { yPercent: -18, opacity: 0, duration: 1.4, stagger: 0.12, ease: 'power3.out', delay: 0.15 });
-    gsap.from($('.hero__photo img', sec), { scale: 1.06, duration: 1.8, ease: 'power2.out' });
+    // вход — CSS-анимацией (не ждёт скриптов); здесь только лёгкий параллакс фото при прокрутке
+    gsap.to($('.hx__photo img', sec), { yPercent: 8, ease: 'none', scrollTrigger: { trigger: sec, start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.to($('.hx__cloth', sec), { yPercent: -6, ease: 'none', scrollTrigger: { trigger: sec, start: 'top top', end: 'bottom top', scrub: true } });
   }
 
   /* ---------- угощение: обычный раздел, сцены появляются по очереди ---------- */
