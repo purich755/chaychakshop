@@ -65,8 +65,9 @@
   // n — кадров в img/chest-open/<dir>/ (см. tools/build-chest-open.mjs); inside — дно открытого сундука на последнем кадре, % кадра;
   // sink — какую часть гостинца прячет передняя стенка
   var KINDS = {
-    'Бирнә сандыгы': { dir: 'green', n: 17, inside: { l: 22, t: 66, w: 72, h: 30 }, sink: 0, label: 'Зелёный сундук ручной чеканки, внутри бархат' },
-    'Сююмбике': { dir: 'gold', n: 19, inside: { l: 9, t: 40, w: 82, h: 30 }, sink: 0.42, label: 'Золотой сундук ручной чеканки, внутри белый' },
+    'VIP': { dir: 'green', n: 17, inside: { l: 22, t: 66, w: 72, h: 30 }, sink: 0, label: 'Сундук VIP, 36 × 27 × 20 см' },
+    'Ханский': { dir: 'green', n: 17, inside: { l: 22, t: 66, w: 72, h: 30 }, sink: 0, label: 'Ханский сундук, 30 × 20 × 17 см' },
+    'Сөембикә': { dir: 'gold', n: 19, inside: { l: 9, t: 40, w: 82, h: 30 }, sink: 0.42, label: 'Сундук «Сөембикә», 25 × 14 × 12 см' },
     'набор «Милли»': { photo: 'img/products/large/nabor-milli-1.webp', label: 'Подарочный набор «Милли» — голубой короб' },
   };
   var FPS = 12;
@@ -86,7 +87,7 @@
       return '<li><button type="button" data-add="' + id + '"><img src="' + DD.thumb(p.images[0]) + '" alt="" width="44" height="44" loading="lazy">' + esc(p.name.replace(/ на натуральном мёду| — .*/, '')) + '</button></li>';
     }).join('');
 
-    function kind() { var r = root.querySelector('input[name="chestkind"]:checked'); return r ? r.value : 'Бирнә сандыгы'; }
+    function kind() { var r = root.querySelector('input[name="chestkind"]:checked'); return r ? r.value : 'VIP'; }
     function src(k, i) { return 'img/chest-open/' + k.dir + '/' + (i < 10 ? '0' : '') + i + '.webp'; }
 
     // ---- кадры ----
@@ -143,6 +144,7 @@
     function useKind(name) {
       var k = KINDS[name];
       if (!k || k === cur) return;
+      if (cur && k.dir && cur.dir === k.dir) { cur = k; opener.setAttribute('aria-label', k.label); return; }
       var first = !cur;
       // смена сундука посреди движения крышки: старую анимацию гасим, ждущие гостинцы полетят в новый сундук
       cancelAnimationFrame(raf); moving = false;

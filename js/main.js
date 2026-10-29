@@ -274,11 +274,16 @@
     });
   }
 
-  /* ---------- Max: ссылка «поделиться» открывает приложение с готовым текстом ---------- */
-  // max.ru/:share?text= в мобильном Max открывает выбор чата; в браузере на компьютере такой страницы нет,
-  // поэтому текст ещё и копируем, а подсказка говорит, кому его отправить.
-  DD.maxUrl = function (text) { return 'https://max.ru/:share?text=' + encodeURIComponent(text || 'Здравствуйте!'); };
-  DD.maxLink = function (el, text) { if (el) { el.href = DD.maxUrl(text); el.setAttribute('data-max-msg', text || ''); } };
+  /* ---------- Max ----------
+     У Max нет ссылки «написать на номер» и нет ссылки с готовым текстом (как wa.me у WhatsApp):
+     max.ru/:share открывается не везде — у владельца не открылся. Рабочая ссылка — только на профиль или канал
+     магазина: в приложении Max → профиль → «Поделиться» → max.ru/u/…  Вставьте её сюда — и кнопки поведут прямо в чат.
+     Пока ссылки нет, кнопка открывает окошко: текст скопирован, номер магазина, кнопка «Открыть Max». */
+  DD.MAX_LINK = '';
+  DD.MAX_PHONE = '+7 (962) 552-71-98';
+  var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  DD.maxOpenUrl = function () { return DD.MAX_LINK || (isMobile ? 'https://max.ru/' : 'https://web.max.ru/'); };
+  DD.maxLink = function (el, text) { if (el) { el.href = DD.maxOpenUrl(); el.setAttribute('data-max-msg', text || 'Здравствуйте!'); } };
   var toastT = 0;
   DD.toast = function (msg) {
     var t = DD.$('[data-toast]');
@@ -288,19 +293,46 @@
     clearTimeout(toastT);
     toastT = setTimeout(function () { t.classList.remove('is-on'); setTimeout(function () { t.hidden = true; }, 400); }, 6500);
   };
+  // копирование работает и там, где нет navigator.clipboard (встроенные браузеры мессенджеров, http)
+  DD.copy = function (text) {
+    var done = false;
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+      done = document.execCommand('copy');
+      ta.remove();
+    } catch (e) {}
+    try { if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text); done = true; } } catch (e) {}
+    return done;
+  };
   function initMax() {
-    DD.$$('[data-max-text]').forEach(function (a) {
-      DD.maxLink(a, a.getAttribute('data-max-text'));
-      a.target = '_blank'; a.rel = 'noopener';
-    });
+    var box = DD.$('[data-maxbox]'), opener = null;
+    DD.$$('[data-max-text]').forEach(function (a) { DD.maxLink(a, a.getAttribute('data-max-text')); a.target = '_blank'; a.rel = 'noopener'; });
+    function show(text) {
+      DD.$('[data-maxbox-text]', box).textContent = text;
+      DD.$('[data-maxbox-open]', box).href = DD.maxOpenUrl();
+      box.hidden = false; DD.lock(true);
+      DD.$('[data-maxbox-copy]', box).focus({ preventScroll: true });
+    }
+    function hide() { box.hidden = true; DD.lock(false); if (opener) opener.focus({ preventScroll: true }); }
     document.addEventListener('click', function (e) {
       var a = e.target.closest('a[data-max-msg]');
       if (!a) return;
       if (a.getAttribute('aria-disabled') === 'true') { e.preventDefault(); return; }
       var text = a.getAttribute('data-max-msg');
-      try { if (navigator.clipboard) navigator.clipboard.writeText(text); } catch (err) {}
-      DD.toast('Открываем Max. Выберите чат с магазином +7 (962) 552-71-98 — текст уже скопирован, его можно просто вставить.');
+      var ok = DD.copy(text);
+      if (DD.MAX_LINK) { DD.toast(ok ? 'Открываем чат с магазином в Max — текст скопирован, вставьте его в сообщение.' : 'Открываем чат с магазином в Max.'); return; }
+      e.preventDefault(); opener = a; show(text);
     });
+    if (!box) return;
+    box.addEventListener('click', function (e) {
+      if (e.target === box || e.target.closest('[data-maxbox-close]')) return hide();
+      if (e.target.closest('[data-maxbox-copy]')) { DD.copy(DD.$('[data-maxbox-text]', box).textContent); DD.toast('Текст скопирован'); }
+      if (e.target.closest('[data-maxbox-phone]')) { DD.copy(DD.MAX_PHONE.replace(/[^\d+]/g, '')); DD.toast('Номер скопирован'); }
+      if (e.target.closest('[data-maxbox-open]')) setTimeout(hide, 300);
+    });
+    document.addEventListener('keydown', function (e) { if (box.hidden) return; if (e.key === 'Escape') hide(); else if (e.key === 'Tab') DD.trap(box, e); });
   }
 
   /* ---------- запуск ---------- */
