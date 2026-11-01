@@ -1096,3 +1096,32 @@ body { background: var(--cream); }
 .maxbox__steps { list-style: decimal; padding-left: 22px; display: grid; gap: 8px; font-size: 16px; }
 .maxbox__phone { border: 0; padding: 0; background: none; font: inherit; font-weight: 700; color: var(--brand); text-decoration: underline; cursor: pointer; }
 .maxbox__text { margin: 18px 0 22px; padding: 14px 16px; max-height: 180px; overflow: auto; white-space: pre-wrap; font: 14px/1.45 var(--f-body); background: var(--paper-2); border-radius: 3px; }
+
+/* сундуки: фото каждой модели, цены без/с обшивкой (фото и прайс владельца, 01.11.2026) */
+.chests__top { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .8fr) minmax(0, .8fr); gap: 28px; align-items: start; margin-bottom: 40px; }
+.chests__head { margin-bottom: 0; }
+.chests__terms { display: grid; gap: 6px; margin-top: 8px; font-size: 15px; color: rgba(246, 243, 238, .82); }
+.chests__terms li::before { content: ''; display: inline-block; width: 6px; height: 6px; margin-right: 10px; border-radius: 50%; background: var(--saffron); vertical-align: 2px; }
+.chests__terms b { color: var(--paper); font-weight: 700; }
+.chests__stack, .chests__lining { margin: 0; }
+.chests__stack img, .chests__lining img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 3px; box-shadow: 0 20px 40px -24px rgba(0, 0, 0, .7); }
+.chests__stack figcaption, .chests__lining figcaption { margin-top: 10px; font: 500 12px/1.4 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: rgba(246, 243, 238, .7); }
+.chests__row { grid-template-columns: 96px minmax(0, 1.4fr) minmax(0, 2fr) auto auto; gap: 12px 28px; }
+.chests__ph { display: block; width: 96px; height: 120px; padding: 0; border: 0; border-radius: 3px; overflow: hidden; cursor: pointer; background: #23331d; }
+.chests__ph img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.chests__ph:hover img { transform: scale(1.06); }
+.chests__price { display: grid; gap: 4px; justify-items: end; }
+.chests__price span { font: 500 11px/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: rgba(246, 243, 238, .55); }
+.chests__price--lined { color: #E9C46A; opacity: .85; }
+.foot__channels { margin-top: 6px; }
+@media (max-width: 1023px) {
+  .chests__top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .chests__head { grid-column: 1 / -1; }
+}
+@media (max-width: 767px) {
+  .chests__row { grid-template-columns: 84px minmax(0, 1fr) minmax(0, 1fr); gap: 6px 14px; align-items: start; }
+  .chests__ph { grid-row: span 3; width: 84px; height: 106px; }
+  .chests__name { grid-column: 2 / -1; }
+  .chests__note { grid-column: 2 / -1; grid-row: auto; }
+  .chests__price { grid-column: auto; grid-row: auto; justify-items: start; }
+}

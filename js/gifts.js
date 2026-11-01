@@ -64,11 +64,12 @@
   var STRIP = ['chak-chak', 'chay-bogatyh-tatar', 'kazanskiy-chay', 'sbiten', 'myod', 'urbech', 'blue-tea', 'shokolad-kuchtenech', 'findi', 'pryaniki', 'kotik-brelok', 'magnit', 'tarelka'];
   // n — кадров в img/chest-open/<dir>/ (см. tools/build-chest-open.mjs); inside — дно открытого сундука на последнем кадре, % кадра;
   // sink — какую часть гостинца прячет передняя стенка
+  // у каждого сундука — своё видео открытия (ролики владельца, без обшивки): VIP — 25-01, Ханский — 11-01, Сөембикә — пост 267
   var KINDS = {
-    'VIP': { dir: 'green', n: 17, inside: { l: 22, t: 66, w: 72, h: 30 }, sink: 0, label: 'Сундук VIP, 36 × 27 × 20 см' },
-    'Ханский': { dir: 'green', n: 17, inside: { l: 22, t: 66, w: 72, h: 30 }, sink: 0, label: 'Ханский сундук, 30 × 20 × 17 см' },
-    'Сөембикә': { dir: 'gold', n: 19, inside: { l: 9, t: 40, w: 82, h: 30 }, sink: 0.42, label: 'Сундук «Сөембикә», 25 × 14 × 12 см' },
-    'набор «Милли»': { photo: 'img/products/large/nabor-milli-1.webp', label: 'Подарочный набор «Милли» — голубой короб' },
+    'VIP': { dir: 'vip', n: 14, inside: { l: 8, t: 60, w: 84, h: 34 }, sink: 0, label: 'Сундук VIP, 36 × 27 × 20 см, открывается — внутри дерево, без обшивки' },
+    'Ханский': { dir: 'hanskiy', n: 12, inside: { l: 12, t: 62, w: 80, h: 32 }, sink: 0, label: 'Ханский сундук, 30 × 20 × 17 см, открывается — без обшивки' },
+    'Сөембикә': { dir: 'gold', n: 19, inside: { l: 9, t: 40, w: 82, h: 30 }, sink: 0.42, label: 'Сундук «Сөембикә», 25 × 14 × 12 см, открывается — без обшивки' },
+    'набор «Милли»': { photo: 'img/products/large/nabor-milli-1.webp', label: 'Подарочный набор «Милли» в цветах флага Татарстана' },
   };
   var FPS = 12;
   function builder() {

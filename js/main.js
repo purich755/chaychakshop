@@ -279,7 +279,8 @@
      max.ru/:share открывается не везде — у владельца не открылся. Рабочая ссылка — только на профиль или канал
      магазина: в приложении Max → профиль → «Поделиться» → max.ru/u/…  Вставьте её сюда — и кнопки поведут прямо в чат.
      Пока ссылки нет, кнопка открывает окошко: текст скопирован, номер магазина, кнопка «Открыть Max». */
-  DD.MAX_LINK = '';
+  DD.MAX_LINK = 'https://max.ru/u/f9LHodD0cOIKUvjd7cvY-jWt1MK2R9RXixmPrLS16L-vmaucLIfczNHrqEA'; // личка магазина в Max (прислал владелец 31.10.2026)
+  DD.MAX_CHANNEL = 'https://max.ru/join/RmRO-5HBu2cf5paXd9XXNIRobAyyEQtSMSEj5DRW0_M'; // канал ЧайЧак stories в Max
   DD.MAX_PHONE = '+7 (962) 552-71-98';
   var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   DD.maxOpenUrl = function () { return DD.MAX_LINK || (isMobile ? 'https://max.ru/' : 'https://web.max.ru/'); };
@@ -325,6 +326,8 @@
       if (DD.MAX_LINK) { DD.toast(ok ? 'Открываем чат с магазином в Max — текст скопирован, вставьте его в сообщение.' : 'Открываем чат с магазином в Max.'); return; }
       e.preventDefault(); opener = a; show(text);
     });
+    // фото сундука в таблице размеров открывает его карточку
+    document.addEventListener('click', function (e) { var b = e.target.closest('[data-open-product]'); if (b && DD.catalog) DD.catalog.open(b.getAttribute('data-open-product'), b); });
     if (!box) return;
     box.addEventListener('click', function (e) {
       if (e.target === box || e.target.closest('[data-maxbox-close]')) return hide();
