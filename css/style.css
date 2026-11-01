@@ -1125,3 +1125,42 @@ body { background: var(--cream); }
   .chests__note { grid-column: 2 / -1; grid-row: auto; }
   .chests__price { grid-column: auto; grid-row: auto; justify-items: start; }
 }
+
+/* строка сундука целиком открывает карточку; наведение — золото чеканки */
+.chests__row { position: relative; isolation: isolate; cursor: pointer; padding-inline: 14px; margin-inline: -14px; border-radius: 4px; transition: background-color .5s var(--ease); }
+.chests__row::before { /* мягкий свет */
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 4px; pointer-events: none; opacity: 0; transition: opacity .5s var(--ease);
+  background: radial-gradient(60% 140% at 12% 50%, rgba(233, 196, 106, .16), transparent 70%), linear-gradient(90deg, rgba(233, 196, 106, .07), rgba(233, 196, 106, 0) 75%); }
+.chests__row::after { /* золотая нить по нижней линии */
+  content: ''; position: absolute; left: 14px; right: 14px; bottom: -1px; height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, #E9C46A, #F7E3A1 50%, #E9C46A); transform: scaleX(0); transform-origin: 0 50%; transition: transform .7s var(--ease); }
+.chests__ph { position: static; overflow: visible; background: none; width: auto; height: auto; }
+.chests__ph::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: 4px; } /* вся строка — одна кнопка */
+.chests__img { display: block; width: 96px; height: 120px; border-radius: 3px; overflow: hidden; background: #23331d;
+  box-shadow: 0 10px 20px -14px rgba(0, 0, 0, .7); transition: transform .55s cubic-bezier(.34, 1.4, .64, 1), box-shadow .55s var(--ease); }
+.chests__img img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.chests__name b, .chests__name span:not(.chests__more) { transition: transform .5s var(--ease), color .4s; }
+.chests__more { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font: 500 11px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: #E9C46A;
+  opacity: 0; transform: translateX(-6px); transition: opacity .4s var(--ease), transform .5s var(--ease); }
+.chests__more .ico { width: 14px; height: 14px; }
+.chests__price { transition: transform .5s var(--ease); }
+@media (hover: hover) {
+  .chests__row:hover::before { opacity: 1; }
+  .chests__row:hover::after { transform: scaleX(1); }
+  .chests__row:hover .chests__img { transform: translateY(-4px) rotate(-2.5deg) scale(1.06); box-shadow: 0 22px 30px -16px rgba(0, 0, 0, .8), 0 0 0 1px rgba(233, 196, 106, .55); }
+  .chests__row:hover .chests__img img { transform: scale(1.08); }
+  .chests__row:hover .chests__name b { transform: translateX(6px); color: #F7E3A1; }
+  .chests__row:hover .chests__name span:not(.chests__more) { transform: translateX(6px); }
+  .chests__row:hover .chests__more { opacity: 1; transform: translateX(6px); }
+  .chests__row:hover .chests__price { transform: translateX(-4px); }
+}
+.chests__row:has(.chests__ph:focus-visible)::before { opacity: 1; }
+.chests__row:has(.chests__ph:focus-visible) { outline: 2px solid var(--saffron); outline-offset: 2px; }
+.chests__ph:focus-visible { outline: none; }
+.chests__row:active .chests__img { transform: scale(.97); }
+@media (max-width: 767px) {
+  .chests__row { padding-inline: 8px; margin-inline: -8px; }
+  .chests__img { width: 84px; height: 106px; }
+  .chests__ph { grid-row: span 3; }
+  .chests__more { opacity: 1; transform: none; }
+}
