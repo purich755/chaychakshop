@@ -1164,3 +1164,24 @@ body { background: var(--cream); }
   .chests__ph { grid-row: span 3; }
   .chests__more { opacity: 1; transform: none; }
 }
+
+/* первый экран: вечернее фото фасада — фоном всего экрана (12.11.2026) */
+.hx__photo picture { display: block; position: absolute; inset: 0; }
+@media (min-width: 1024px) {
+  .hx__photo { position: absolute; inset: 0; z-index: 0; grid-column: auto; grid-row: auto; }
+  .hx__photo picture { left: 20%; }
+  .hx__photo img { object-position: 50% 36%; }
+  .hx__photo::after { background:
+      linear-gradient(180deg, rgba(20, 30, 16, .62) 0, rgba(20, 30, 16, 0) 24%),
+      linear-gradient(0deg, rgba(20, 30, 16, .45) 0, rgba(20, 30, 16, 0) 22%),
+      linear-gradient(90deg, rgb(47, 68, 38) 0, rgb(47, 68, 38) 22%, rgba(47, 68, 38, .95) 32%, rgba(47, 68, 38, .82) 42%, rgba(47, 68, 38, .42) 51%, rgba(47, 68, 38, .12) 59%, rgba(47, 68, 38, 0) 66%); }
+  .hx__panel { background: none; }
+}
+@media (max-width: 1023px) {
+  .hx { grid-template-rows: 64vh auto; }
+  .hx__photo img { object-position: 50% 30%; }
+}
+@media (min-width: 600px) and (max-width: 1023px) {
+  .hx { grid-template-rows: 72vh auto; }
+  .hx__photo img { object-position: 50% 14%; }
+}

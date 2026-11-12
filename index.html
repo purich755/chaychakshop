@@ -19,9 +19,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="preload" as="image" href="img/facade/hero-facade.webp" imagesrcset="img/facade/hero-facade-720.webp 720w, img/facade/hero-facade.webp 896w" imagesizes="(min-width: 1024px) 58vw, 100vw" fetchpriority="high">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,300..600;1,7..72,300..500&family=PT+Sans:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap&subset=cyrillic,cyrillic-ext">
-<link rel="stylesheet" href="css/style.css?v=6bc7a0b4">
+<link rel="preload" as="image" href="img/facade/hero-bg.webp" imagesrcset="img/facade/hero-bg-720.webp 720w, img/facade/hero-bg.webp 1024w" imagesizes="80vw" media="(min-width: 1024px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/facade/hero-bg-m.webp" imagesrcset="img/facade/hero-bg-m-480.webp 480w, img/facade/hero-bg-m.webp 676w" imagesizes="100vw" media="(max-width: 1023px)" fetchpriority="high">
+<link rel="stylesheet" href="css/style.css?v=af3e4fdb">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
@@ -92,7 +93,10 @@
 <!-- Первый экран: крыльцо магазина и их полотно -->
 <section class="hero hx" id="top" aria-labelledby="hero-title">
   <div class="hx__photo">
-    <img src="img/facade/hero-facade.webp" srcset="img/facade/hero-facade-720.webp 720w, img/facade/hero-facade.webp 896w" sizes="(min-width: 1024px) 58vw, 100vw" width="896" height="1200" alt="Вход в «Дом татарской продукции»: крыльцо под расписным козырьком с тюльпанами, деревянная дверь, над входом зелёная вывеска" fetchpriority="high">
+    <picture>
+      <source media="(max-width: 1023px)" srcset="img/facade/hero-bg-m-480.webp 480w, img/facade/hero-bg-m.webp 676w" sizes="100vw" width="676" height="1024">
+      <img src="img/facade/hero-bg.webp" srcset="img/facade/hero-bg-720.webp 720w, img/facade/hero-bg.webp 1024w" sizes="80vw" width="1024" height="1024" alt="Вход в «Дом татарской продукции» вечером: подсвеченное крыльцо, открытая дверь, над входом вывеска и печать ЧайЧак" fetchpriority="high">
+    </picture>
   </div>
   <div class="hx__panel">
     <div class="hx__in">
